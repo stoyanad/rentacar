@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reservation Form</title>
+</head>
+<body>
+<h1>Create a Reservation</h1>
+<form th:action="@{/reservations}" th:object="${reservation}" method="post">
+    <div>
+        <label for="car">Car ID:</label>
+        <input type="text" id="car" th:field="*{car.id}"/>
+    </div>
+    <div>
+        <label for="customer">Customer ID:</label>
+        <input type="text" id="customer" th:field="*{customer.id}"/>
+    </div>
+    <div>
+        <label for="rentalPackage">Rental Package ID:</label>
+        <input type="text" id="rentalPackage" th:field="*{rentalPackage.id}"/>
+    </div>
+    <div>
+        <label for="reservationDate">Reservation Date:</label>
+        <input type="date" id="reservationDate" th:field="*{reservationDate}"/>
+    </div>
+    <div>
+        <label for="rentalStartDate">Rental Start Date:</label>
+        <input type="date" id="rentalStartDate" th:field="*{rentalStartDate}"/>
+    </div>
+    <div>
+        <label for="rentalEndDate">Rental End Date:</label>
+        <input type="date" id="rentalEndDate" th:field="*{rentalEndDate}"/>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+</body>
+</html>

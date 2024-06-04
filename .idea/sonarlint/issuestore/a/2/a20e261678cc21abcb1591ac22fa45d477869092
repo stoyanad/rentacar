@@ -1,0 +1,8 @@
+
+›	java:S116"TRename this field "ROLES_KEY" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñ‚¯şÿÿÿÿ8ÓÚæøı1J$feae9581-549d-4586-a20f-c6325f01bc71
+i
+java:S1170"!Make this final field static too.(ñ‚¯şÿÿÿÿ8ÓÚæøı1J$f44801d9-71d1-42c8-a7a8-2d21e857450b
+½
+java:S6204,"zReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()' and ensure that the list is unmodified.(ã¤£’8†©Šùı1J$6e20d924-854d-470d-861b-cb74aacaf814
+r
+java:S1068"*Remove this unused "parser" private field.(é×Ü™üÿÿÿÿ8İ¶‰ùı1J$6b574b8e-08f6-4096-9221-e292fafe8ca8
