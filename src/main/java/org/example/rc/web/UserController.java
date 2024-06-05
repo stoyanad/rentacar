@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -59,15 +60,37 @@ public class UserController {
         return ResponseEntity.ok(currentUser);
     }
 
-
-
     @PostMapping("/signup")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CSR')")
     @ResponseStatus(HttpStatus.CREATED)
-    public User signup(@RequestBody @Valid LoginDTO loginDto) {
-        return userService.signup(loginDto.getUsername(), loginDto.getPassword(), loginDto.getFirstName(),
-                loginDto.getLastName()).orElseThrow(() -> new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
+    public ResponseEntity<Map<String, Object>> signup(@RequestBody @Valid LoginDTO loginDto) {
+        Optional<User> existingUser = userService.findByUsername(loginDto.getUsername());
+        if (existingUser.isPresent()) {
+            // User with the provided username already exists
+            Map<String, Object> response = new HashMap<>();
+            response.put("error", "User with this username already exists.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        Optional<User> user = userService.signup(loginDto.getUsername(), loginDto.getPassword(), loginDto.getFirstName(),
+                loginDto.getLastName());
+        if (user.isPresent()) {
+            Optional<String> token = userService.signin(loginDto.getUsername(), loginDto.getPassword());
+            if (token.isPresent()) {
+                User newUser = user.get();
+                boolean isAdmin = newUser.getRoles().stream().anyMatch(role -> role.getRoleName().equals("ROLE_ADMIN"));
+
+                Map<String, Object> response = new HashMap<>();
+                response.put("token", token.get());
+                response.put("isAdmin", isAdmin);
+                response.put("username", newUser.getUsername()); // Include username in the response
+                response.put("message", "Signup successful. Please login."); // Add a message indicating successful signup
+
+                return ResponseEntity.ok(response);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -96,5 +96,8 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + username));
     }
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
 }
