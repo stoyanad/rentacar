@@ -2,6 +2,8 @@
 
 ``
 mvn clean install
+``
+``
 mvn spring-boot:run
 ``
 
@@ -109,7 +111,7 @@ docker exrc -t -i rc-app /bin/bash
 ``
 #####
 ##### Push image to Docker hub
-######Login to Docker hub locally
+###### Login to Docker hub locally
 ``docker login``
 ###### Upload image
 ``

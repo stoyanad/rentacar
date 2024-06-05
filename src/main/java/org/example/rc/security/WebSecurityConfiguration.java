@@ -18,36 +18,40 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
+    private final JwtTokenFilter jwtTokenFilter;
 
-    public WebSecurityConfiguration(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfiguration(JwtTokenFilter jwtTokenFilter) {
+        this.jwtTokenFilter = jwtTokenFilter;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                // Permit access to Swagger UI resources
                 .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs", "/webjars/**").permitAll()
-                // Permit access to login and signup endpoints
-                .antMatchers("/users/login", "/users/signup").permitAll()
-                // Permit access to static resources (index.html, css, js, etc.)
-                .antMatchers("/", "/index.html", "/styles.css", "/script.js", "/css/**", "/js/**").permitAll()
-                // Permit access to endpoints for fetching available cars, making reservations, and leaving ratings
-                .antMatchers("/cars", "/reservations", "/ratings").permitAll()
-                // Require authentication for other endpoints
+                .antMatchers("/users/signup", "/users/login", "/users/current-user").permitAll()
+                .antMatchers("/", "/index.html", "/login.html", "/styles.css", "/css/**", "/js/**").permitAll()
+                .antMatchers("/login", "/cars", "/reservations", "/ratings").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // Add JWT token filter
-        http.addFilterBefore(new JwtTokenFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);
+        // Add JWT token filter for API requests
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // Allow Swagger to be accessed without authentication
         web.ignoring().antMatchers("/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**");
     }
 

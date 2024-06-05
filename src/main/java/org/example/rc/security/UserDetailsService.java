@@ -44,7 +44,7 @@ public class UserDetailsService implements org.springframework.security.core.use
      * @return UserDetails if valid, Empty otherwise
      */
     public Optional<UserDetails> loadUserByJwtToken(String jwtToken) {
-        if (jwtTokenProvider.isValidToken(jwtToken)) {
+        if (jwtTokenProvider.validateToken(jwtToken)) {
             return Optional.of(
                     withUsername(jwtTokenProvider.getUsername(jwtToken))
                             .authorities(jwtTokenProvider.getRoles(jwtToken))
@@ -62,7 +62,7 @@ public class UserDetailsService implements org.springframework.security.core.use
      * Extract the username from the JWT then lookup the user in the database.
      */
     public Optional<UserDetails> loadUserByJwtTokenAndDatabase(String jwtToken) {
-        if (jwtTokenProvider.isValidToken(jwtToken)) {
+        if (jwtTokenProvider.validateToken(jwtToken)) {
             return Optional.of(loadUserByUsername(jwtTokenProvider.getUsername(jwtToken)));
         } else {
             return Optional.empty();

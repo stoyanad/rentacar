@@ -1,32 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Car Rental Service</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <title>Main Page</title>
 </head>
 <body>
-<h1>Welcome to Car Rental Service</h1>
-<div id="login-section">
-    <h2>Login</h2>
-    <form id="login-form">
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-</div>
-<div id="signup-section">
-    <h2>Signup</h2>
-    <form id="signup-form">
-        <input type="text" id="signup-username" placeholder="Username" required>
-        <input type="password" id="signup-password" placeholder="Password" required>
-        <button type="submit">Signup</button>
-    </form>
-</div>
-<div id="car-list">
+<header>
+    <h1>Welcome to Rent-A-Car</h1>
+    <div id="userActions">
+        <!-- Placeholder for "Hello, username" and logout button -->
+    </div>
+</header>
+
+<main>
     <h2>Available Cars</h2>
-    <ul id="cars"></ul>
-</div>
-<script src="/js/script.js"></script>
+    <!-- List of available cars -->
+    <ul id="carList">
+        <!-- Placeholder for car list -->
+    </ul>
+</main>
+
+<!-- Reference to the main.js script -->
+<script src="/js/main.js"></script>
 </body>
 </html>

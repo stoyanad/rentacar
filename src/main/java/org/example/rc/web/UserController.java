@@ -7,6 +7,8 @@ import org.example.rc.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
@@ -29,11 +31,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDTO loginDto) throws Exception {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody @Valid LoginDTO loginDto) {
         Optional<String> token = userService.signin(loginDto.getUsername(), loginDto.getPassword());
         if (token.isPresent()) {
-            User user = userRepository.findByUsername(loginDto.getUsername())
-                    .orElseThrow(() -> new Exception("User not found"));
+            User user = userService.getCurrentUser(loginDto.getUsername());
 
             boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getRoleName().equals("ROLE_ADMIN"));
 
@@ -46,6 +47,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<User> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String username = authentication.getName();
+        User currentUser = userService.getCurrentUser(username);
+        return ResponseEntity.ok(currentUser);
+    }
+
 
 
     @PostMapping("/signup")

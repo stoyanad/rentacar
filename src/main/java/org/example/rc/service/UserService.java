@@ -90,4 +90,11 @@ public class UserService {
     public List<User> getAll() {
         return userRepository.findAll();
     }
+
+    public User getCurrentUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + username));
+    }
+
+
 }
