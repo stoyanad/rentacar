@@ -1,31 +1,79 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 h1, h2 {
     text-align: center;
 }
 
-#login-section, #signup-section, #car-list {
-    margin: 20px;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e7e7e7;
+    position: relative; /* Needed for absolute positioning within the header */
+}
+
+main {
+    padding: 20px;
 }
 
 form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 20px;
 }
 
 input {
     margin: 5px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-button {
+button, a {
+    display: inline-block;
     margin: 5px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-#signupButtonContainer {
+button:hover, a:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#actionsContainer {
+    display: flex;
+    align-items: center;
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+#userActions {
+    margin-right: 10px;
+}
+
+#carList {
+    margin: 20px;
 }

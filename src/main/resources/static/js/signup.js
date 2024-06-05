@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => {
             if (response.ok) {
-                // Redirect to main page upon successful sign-up
-                window.location.href = '/';
+                // Redirect to login page upon successful sign-up
+                window.location.href = '/login';
             } else {
                 return response.json(); // Extract JSON response body
             }
