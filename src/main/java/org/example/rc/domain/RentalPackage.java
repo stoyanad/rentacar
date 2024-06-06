@@ -1,9 +1,12 @@
 package org.example.rc.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "rental_package")
+@Data
 public class RentalPackage {
     @Id
     @Column(name = "code", length = 2)
@@ -11,20 +14,4 @@ public class RentalPackage {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

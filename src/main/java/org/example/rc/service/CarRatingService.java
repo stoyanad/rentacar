@@ -11,15 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CarRatingService {
 
     private final CarRatingRepository carRatingRepository;
-
     private final CarRepository carRepository;
-
     private final UserRepository userRepository;
 
     public CarRatingService(CarRatingRepository carRatingRepository, CarRepository carRepository, UserRepository userRepository) {
@@ -29,7 +26,7 @@ public class CarRatingService {
     }
 
     public List<CarRatingDTO> findAll() {
-        return carRatingRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+        return carRatingRepository.findAll().stream().map(this::convertToDTO).toList();
     }
 
     public Optional<CarRatingDTO> findById(Long id) {
@@ -58,15 +55,15 @@ public class CarRatingService {
     private CarRating convertToEntity(CarRatingDTO carRatingDTO) {
         CarRating carRating = new CarRating();
 
-        Optional<Car> car = carRepository.findById(carRatingDTO.getCarId());
-        Optional<User> user = userRepository.findById(carRatingDTO.getCustomerId());
+        Car car = carRepository.findById(carRatingDTO.getCarId())
+                .orElseThrow(() -> new IllegalArgumentException("Car not found"));
+        User user = userRepository.findById(carRatingDTO.getCustomerId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        if (car.isPresent() && user.isPresent()) {
-            carRating.setCar(car.get());
-            carRating.setCustomer(user.get());
-            carRating.setScore(carRatingDTO.getScore());
-            carRating.setComment(carRatingDTO.getComment());
-        }
+        carRating.setCar(car);
+        carRating.setCustomer(user);
+        carRating.setScore(carRatingDTO.getScore());
+        carRating.setComment(carRatingDTO.getComment());
 
         return carRating;
     }

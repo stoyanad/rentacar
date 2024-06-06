@@ -1,8 +1,12 @@
 package org.example.rc.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name = "car_rating")
+@Data
 public class CarRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,46 +23,7 @@ public class CarRating {
     @Column(nullable = false)
     private Integer score;
 
-    @Column(length = 255)
+    @Column()
     private String comment;
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public User getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(User customer) {
-        this.customer = customer;
-    }
-
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

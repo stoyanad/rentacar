@@ -1,29 +1,22 @@
 package org.example.rc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Security User Entity.
-  */
 @Entity
 @Table(name = "security_user")
+@Data
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    public User(String username, String password, Role role, String firstName, String lastName) {
-        this.username = username;
-        this.password = password;
-        this.roles = Arrays.asList(role);
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
 
     @Column(name = "username")
     private String username;
@@ -38,67 +31,19 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    /**
-     * Default Constructor.
-     */
-    protected User() {
-    }
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns
             = @JoinColumn(name = "user_id",
             referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id",
                     referencedColumnName = "id"))
-
-
     private List<Role> roles;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
+    public User(String username, String password, Role role, String firstName, String lastName) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
+        this.roles = Collections.singletonList(role);
         this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 }
