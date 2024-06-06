@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rentacar-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rentacar
+  template:
+    metadata:
+      labels:
+        app: rentacar
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: rentacar
+          image: <your-docker-repo/rentacar:latest>
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "k8s"
+          resources:
+            limits:
+              cpu: 500m
+              memory: "512Mi"

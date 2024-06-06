@@ -1,3 +1,14 @@
+# RentACar Service
+
+This repository contains the RentACar service, a microservice for managing car rentals.
+
+## Prerequisites
+
+Before running the RentACar service on Kubernetes, make sure you have the following installed:
+
+- Kubernetes cluster (e.g., Minikube, Docker Desktop with Kubernetes enabled, or a cloud provider like GKE, AKS, or EKS)
+- `kubectl` command-line tool installed and configured to communicate with your Kubernetes cluster
+
 # Run RentACar application locally
 
 ``
@@ -124,3 +135,81 @@ docker pull <docker hub repository>/rentacar-default
 ##### Run Container from docker hub image
 ``
 docker run --name rc-app-default -p 8080:8080  -d <docker hub repository>/rentacar-default``
+
+## Running on Kubernetes
+
+Follow these steps to deploy the RentACar service on Kubernetes:
+
+1. Clone this repository:
+
+    ```bash
+    git clone https://github.com/your-username/rentacar.git
+    ```
+
+2. Navigate to the repository directory:
+
+    ```bash
+    cd rentacar
+    ```
+
+3. Build the Docker image for the RentACar service:
+
+    ```bash
+    docker build -t rentacar:latest .
+    ```
+
+4. Tag the Docker image with your Docker repository URL (if applicable):
+
+    ```bash
+    docker tag rentacar:latest your-docker-repo/rentacar:latest
+    ```
+
+5. Push the Docker image to your Docker repository (if applicable):
+
+    ```bash
+    docker push your-docker-repo/rentacar:latest
+    ```
+
+6. Apply the Kubernetes deployment and service manifests:
+
+    ```bash
+    kubectl apply -f kubernetes/
+    ```
+
+7. Verify that the RentACar pods are running:
+
+    ```bash
+    kubectl get pods
+    ```
+
+8. Once the pods are running, you can access the RentACar service using the cluster IP or node port (depending on your Kubernetes setup).
+
+## Accessing the Service
+
+To access the RentACar service, you need to find out the service's URL. Follow these steps:
+
+1. Get the external IP address of the service (for services of type `LoadBalancer`):
+
+    ```bash
+    kubectl get svc rentacar-service
+    ```
+
+2. If the service is of type `NodePort` or `LoadBalancer`, you can access it using the external IP address and port.
+
+3. If the service is of type `ClusterIP`, you can access it using port forwarding:
+
+    ```bash
+    kubectl port-forward service/rentacar-service 8080:8080
+    ```
+
+   Then, access the service at `http://localhost:8080`.
+
+## Cleaning Up
+
+To clean up the RentACar service from your Kubernetes cluster, run the following command:
+
+   ```bash
+kubectl delete -f kubernetes/
+   ```
+
+
